@@ -1,14 +1,13 @@
 
 
-maze_str="111110111011100100010000011011111111111100000001010011111111101010010000010001111110101011110100010001001011111111111"
-width=13
-height=9
+maze_str="1111111110101010101111101111111011100000010101010101010000000001000001111111101011101111111011101110101110000000010100000000010101000101000111111110101111111111101011111010101101000101010101010100000001000101011010101110101010101011101011111011110001000100010000010001010001010100111011101110101110101111111110111010000100000101000100000100000000010110111111111110111111111010111110111100000000000100000100000100000100011110111111111011111011111111101011100100000100000000010001000001010001111111101111101111101011101010111110010000000001000001010001010001000110111010111011111111111011111011101101010100010001000000010101000100011010111110111110101111111010101011110000010001000001000101010001010100101111111010101111111010101010101011010001010001010101010001010101000111101110111111101010101111111011111"
+width=35
+height=23
 
 #if you want some other maze of different dimensions just change the maze_str and it properties variables named width and height to its respective value!
 
 visited_array=[]
 path_array=[]
-junction_array=[]
 maze=[]
 temp=[]
 ind=1
@@ -66,7 +65,6 @@ def solveMaze(maze,entry_point,exit_point):
     if(entry_point==exit_point):
         path_array.append(entry_point)
         return 1
-    
     if(noOfPaths(maze,entry_point)==0):
         visited_array.append(entry_point)
         return 0
@@ -89,7 +87,6 @@ def solveMaze(maze,entry_point,exit_point):
             return 0
         
     if(noOfPaths(maze,entry_point)>1):
-        junction_array.append(entry_point)
         visited_array.append(entry_point)
         paths=nextPath(maze,entry_point)
         for new_pos in list(paths.values()):
@@ -103,9 +100,9 @@ def solveMaze(maze,entry_point,exit_point):
            
                 
 def display_solved_maze(maze,path_array):
-    solved_maze=maze
+    solved_maze=[ a[:] for a in maze]
     for x in path_array:
-        solved_maze[x[0]][x[1]]='*'
+        solved_maze[x[0]][x[1]]='#'
     entry=path_array[0]
     exit=path_array[len(path_array)-1]
     solved_maze[entry[0]][entry[1]]='e'
@@ -124,16 +121,16 @@ def direction(maze,path_array):
         y2=pos2[0]
         if((y1-y2)==0 and (x1-x2)==-1):
             new_maze[pos1[0]][pos1[1]]='>'
-            direction_array.append('r')
+            direction_array.append('R')
         if((y1-y2)==0 and (x1-x2)==1):
             new_maze[pos1[0]][pos1[1]]='<'
-            direction_array.append('l')
+            direction_array.append('L')
         if((x1-x2)==0 and (y1-y2)==-1):
             new_maze[pos1[0]][pos1[1]]='v'
-            direction_array.append('d')
+            direction_array.append('D')
         if((x1-x2)==0 and (y1-y2)==1):
             new_maze[pos1[0]][pos1[1]]='^'
-            direction_array.append('u')
+            direction_array.append('U')
     entry=path_array[0]
     exit=path_array[len(path_array)-1]
     new_maze[entry[0]][entry[1]]='e'
@@ -147,16 +144,16 @@ def direction(maze,path_array):
                 if(ind1==ind2):
                     count=count+1
                 else:
-                    string=string+str(count)+str(ind1)+" "
+                    string=string+str(count)+str(ind1)
                     count=1
             else:
                 ind1=direction_array[z]
                 ind2=direction_array[z-1]
                 if(ind1==ind2):
-                    string=string+str(count)+str(ind1)+" "
+                    string=string+str(count)+str(ind1)
                 else:
                     count=1
-                    string=string+str(count)+str(ind1)+" "
+                    string=string+str(count)+str(ind1)
     display(new_maze)
 
     return string
@@ -169,24 +166,25 @@ def solve(maze,entry_point,exit_point):
     if(flag==1):
         print("\nThe maze is solved!\n")
         print("PATH ARRAY: {}\n".format(path_array))
-        direction_array=direction(maze,path_array)
+        m=[a[:] for a in maze]
+        direction_array=direction(m,path_array)
         print("DIRECTIONS : {}\n".format(direction_array))
-#         display_solved_maze(maze,path_array)
+
+     
     else:
         print("There is no path for the given exit point!")
-       
-            
-
-
-solve(maze,[0,0],[8,12]) #use this method to solve the maze.But only one intance at a time!
-
-
-
-# In[343]:
+    path_array.clear()
+    visited_array.clear()
 
 
 
 
+solve(maze,[0,34],[0,0])
 
-# print(junction_array)
+solve(maze,[22,34],[0,0])
+
+solve(maze,[22,0],[0,0])
+
+
+
 
